@@ -291,8 +291,9 @@ button:hover {
 .botoes-orcamento {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
-  gap: 8px;
-  margin-top: 8px;
+  gap: 10px;
+  margin-top: 10px;
+  margin-bottom: 13px;
 }
 
 .botoes-orcamento button {
