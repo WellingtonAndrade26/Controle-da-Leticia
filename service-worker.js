@@ -1,15 +1,15 @@
-const CACHE_NAME = "controle-da-leticia-v5";
+const CACHE_NAME = "controle-da-leticia-v6";
 
 const ARQUIVOS = [
-  "./",
-  "./index.html",
-  "./style.css",
-  "./script.js",
-  "./manifest.json",
-  "./service-worker.js",
-  "./images/Logo-leticia.png",
-  "./images/icon-192.png",
-  "./images/icon-512.png"
+  "/Controle-da-Leticia/",
+  "/Controle-da-Leticia/index.html",
+  "/Controle-da-Leticia/style.css",
+  "/Controle-da-Leticia/script.js",
+  "/Controle-da-Leticia/manifest.json",
+  "/Controle-da-Leticia/service-worker.js",
+  "/Controle-da-Leticia/images/Logo-leticia.png",
+  "/Controle-da-Leticia/images/icon-192.png",
+  "/Controle-da-Leticia/images/icon-512.png"
 ];
 
 self.addEventListener("install", function (event) {
@@ -18,7 +18,6 @@ self.addEventListener("install", function (event) {
       return cache.addAll(ARQUIVOS);
     })
   );
-
   self.skipWaiting();
 });
 
@@ -34,7 +33,6 @@ self.addEventListener("activate", function (event) {
       );
     })
   );
-
   self.clients.claim();
 });
 
