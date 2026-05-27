@@ -1,4 +1,4 @@
-const CACHE_NAME = "controle-da-leticia-v1";
+const CACHE_NAME = "controle-da-leticia-v4";
 
 const ARQUIVOS = [
   "./",
@@ -6,7 +6,6 @@ const ARQUIVOS = [
   "./style.css",
   "./script.js",
   "./manifest.json",
-  "./service-worker.js",
   "./imagens/banner-topo.png",
   "./imagens/icon-192.png",
   "./imagens/icon-512.png"
@@ -18,6 +17,8 @@ self.addEventListener("install", function (event) {
       return cache.addAll(ARQUIVOS);
     })
   );
+
+  self.skipWaiting();
 });
 
 self.addEventListener("activate", function (event) {
@@ -32,6 +33,8 @@ self.addEventListener("activate", function (event) {
       );
     })
   );
+
+  self.clients.claim();
 });
 
 self.addEventListener("fetch", function (event) {
