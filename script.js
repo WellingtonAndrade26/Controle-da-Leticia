@@ -271,6 +271,70 @@ mesSelecionadoInput.addEventListener("change", function () {
   atualizarDashboardCategorias();
 });
 
+let eventoInstalacao = null;
+
+const btnInstallApp = document.getElementById("btnInstallApp");
+
+function estaNoModoApp() {
+  return window.matchMedia("(display-mode: standalone)").matches || window.navigator.standalone === true;
+}
+
+function esconderBotaoInstalar() {
+  if (btnInstallApp) {
+    btnInstallApp.classList.add("oculto");
+  }
+}
+
+function mostrarBotaoInstalar() {
+  if (btnInstallApp && !estaNoModoApp()) {
+    btnInstallApp.classList.remove("oculto");
+  }
+}
+
+// Se já estiver aberto como app instalado, esconde o botão
+window.addEventListener("load", function () {
+  if (estaNoModoApp()) {
+    esconderBotaoInstalar();
+  } else {
+    mostrarBotaoInstalar();
+  }
+});
+
+// Chrome Android libera esse evento quando o PWA está pronto para instalar
+window.addEventListener("beforeinstallprompt", function (event) {
+  event.preventDefault();
+
+  eventoInstalacao = event;
+
+  mostrarBotaoInstalar();
+});
+
+btnInstallApp.addEventListener("click", async function () {
+  if (estaNoModoApp()) {
+    esconderBotaoInstalar();
+    return;
+  }
+
+  if (!eventoInstalacao) {
+    alert("Para instalar, toque nos três pontinhos do navegador e escolha 'Adicionar à tela inicial' ou 'Instalar app'.");
+    return;
+  }
+
+  eventoInstalacao.prompt();
+
+  const escolha = await eventoInstalacao.userChoice;
+
+  if (escolha.outcome === "accepted") {
+    esconderBotaoInstalar();
+  }
+
+  eventoInstalacao = null;
+});
+
+// Quando instalar, esconde o botão
+window.addEventListener("appinstalled", function () {
+  esconderBotaoInstalar();
+});
 
 mostrarGastos();
 atualizarTotal();
