@@ -1,8 +1,9 @@
 {
   "name": "Controle da Letícia",
-  "short_name": "Gastos",
-  "description": "Aplicativo simples para controle de gastos mensais.",
+  "short_name": "Controle",
+  "description": "App para controle de gastos mensais.",
   "start_url": "./index.html",
+  "scope": "./",
   "display": "standalone",
   "background_color": "#fdf2f8",
   "theme_color": "#ec4899",
