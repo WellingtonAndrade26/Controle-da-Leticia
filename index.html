@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Controle da Letícia</title>
+
+  <link rel="stylesheet" href="style.css">
+  <link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#ec4899">
+</head>
+<body>
+
+  <div class="app">
+
+    <header class="topo-banner">
+  <img src="images/Logo-leticia.png" alt="Controle da Letícia">
+</header>
+
+<section class="card filtro-mes">
+  <label for="mesSelecionado">Mês selecionado</label>
+
+  <input 
+    type="month" 
+    id="mesSelecionado"
+  >
+</section>
+
+    <section class="card resumo">
+      <h2>Resumo do mês</h2>
+
+      <div class="orcamento-box">
+  <label for="orcamentoInput">Orçamento do mês</label>
+
+  <div class="orcamento-linha">
+  <input 
+    type="number" 
+    id="orcamentoInput" 
+    placeholder="Ex: 1500" 
+    step="0.01"
+  >
+</div>
+
+<div class="botoes-orcamento">
+  <button id="btnAdicionarOrcamento" type="button">Adicionar</button>
+  <button id="btnRetirarOrcamento" type="button">Retirar</button>
+  <button id="btnDefinirOrcamento" type="button">Definir</button>
+</div>
+
+      <div class="resumo-valores">
+        <div>
+          <span>Total gasto</span>
+          <strong id="totalGasto">R$ 0,00</strong>
+        </div>
+
+        <div>
+          <span>Orçamento</span>
+          <strong id="orcamentoTotal">R$ 0,00</strong>
+        </div>
+      </div>
+
+      <div class="saldo-box">
+  <span id="textoSaldo">Disponível</span>
+  <strong id="saldoRestante">R$ 0,00</strong>
+</div>
+
+    </section>
+
+    <section class="card">
+      <h2>Adicionar gasto</h2>
+
+      <form id="formGasto">
+        <input 
+          type="text" 
+          id="descricao" 
+          placeholder="Descrição do gasto" 
+          required
+        >
+
+        <input 
+          type="number" 
+          id="valor" 
+          placeholder="Valor do gasto" 
+          step="0.01" 
+          required
+        >
+
+        <select id="categoria" required>
+          <option value="Mercado">Mercado</option>
+          <option value="Transporte">Transporte</option>
+          <option value="Contas">Contas</option>
+          <option value="Alimentação">Alimentação</option>
+          <option value="Saúde">Saúde</option>
+          <option value="Lazer">Lazer</option>
+          <option value="Casa">Casa</option>
+          <option value="Outros">Outros</option>
+        </select>
+
+        <input 
+          type="date" 
+          id="data" 
+          required
+        >
+
+        <button type="submit">Salvar gasto</button>
+      </form>
+    </section>
+
+<section class="card">
+  <h2>Onde o dinheiro foi</h2>
+
+  <div id="dashboardCategorias">
+    <!-- O resumo por categoria vai aparecer aqui -->
+  </div>
+</section>  
+
+    <section class="card">
+      <h2>Gastos cadastrados</h2>
+
+      <ul id="listaGastos">
+        <!-- Os gastos vão aparecer aqui pelo JavaScript -->
+      </ul>
+    </section>
+
+  </div>
+
+  <script src="script.js"></script>
+
+<script>
+  if ("serviceWorker" in navigator) {
+    navigator.serviceWorker.register("service-worker.js");
+  }
+</script>
+
+</body>
+</html>
+</body>
+</html>

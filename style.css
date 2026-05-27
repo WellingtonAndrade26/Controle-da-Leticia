@@ -1,0 +1,364 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Arial, sans-serif;
+}
+
+body {
+  background: linear-gradient(180deg, #fdf2f8, #f8fafc);
+  color: #1e293b;
+}
+
+.app {
+  width: 100%;
+  max-width: 430px;
+  margin: 0 auto;
+  min-height: 100vh;
+  padding: 14px;
+  padding-bottom: 30px;
+}
+
+.topo-banner {
+  border-radius: 24px;
+  overflow: hidden;
+  margin-bottom: 16px;
+  box-shadow: 0 12px 28px rgba(139, 92, 246, 0.22);
+}
+
+.topo-banner img {
+  width: 100%;
+  height: 150px;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+}
+
+.card {
+  background: rgba(255, 255, 255, 0.92);
+  padding: 16px;
+  border-radius: 24px;
+  margin-bottom: 14px;
+  box-shadow: 0 10px 25px rgba(15, 23, 42, 0.07);
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(8px);
+}
+
+.card h2 {
+  font-size: 17px;
+  margin-bottom: 14px;
+  color: #0f172a;
+}
+
+.resumo-valores {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.resumo-valores div {
+  padding: 14px;
+  border-radius: 16px;
+}
+
+.resumo-valores span {
+  display: block;
+  font-size: 13px;
+  color: #64748b;
+  margin-bottom: 6px;
+}
+
+.resumo-valores strong {
+  font-size: 18px;
+  color: #0f172a;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+input,
+select,
+button {
+  width: 100%;
+  padding: 14px;
+  border-radius: 16px;
+  border: 1px solid #e2e8f0;
+  font-size: 15px;
+}
+
+input,
+select {
+  background: #f8fafc;
+  color: #0f172a;
+}
+
+input:focus,
+select:focus {
+  outline: none;
+  border-color: #ec4899;
+}
+
+button {
+  background: linear-gradient(135deg, #ec4899, #8b5cf6);
+  color: white;
+  border: none;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: 0 8px 18px rgba(236, 72, 153, 0.25);
+}
+
+button:hover {
+  opacity: 0.92;
+}
+
+#listaGastos {
+  list-style: none;
+}
+
+.gasto-item {
+  background: #f8fafc;
+  padding: 14px;
+  border-radius: 18px;
+  margin-bottom: 10px;
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  border: 1px solid #e2e8f0;
+}
+
+.gasto-info strong {
+  display: block;
+  font-size: 15px;
+  color: #0f172a;
+  margin-bottom: 4px;
+}
+
+.gasto-info span {
+  font-size: 12px;
+  color: #64748b;
+}
+
+.gasto-valor {
+  font-weight: bold;
+  color: #ec4899;
+  white-space: nowrap;
+}
+
+.btn-excluir {
+  margin-top: 6px;
+  padding: 7px 10px;
+  font-size: 12px;
+  border-radius: 999px;
+  background: #fee2e2;
+  color: #dc2626;
+  box-shadow: none;
+}
+
+.btn-excluir:hover {
+  background: #fecaca;
+}
+
+.orcamento-box {
+  margin-bottom: 15px;
+}
+
+.orcamento-box label {
+  display: block;
+  font-size: 14px;
+  color: #64748b;
+  margin-bottom: 8px;
+}
+
+.orcamento-linha {
+  display: grid;
+  grid-template-columns: 1fr 90px;
+  gap: 8px;
+}
+
+.orcamento-linha button {
+  padding: 13px 8px;
+}
+
+.saldo-box {
+  margin-top: 12px;
+  background: #f0fdf4;
+  border: 1px solid #bbf7d0;
+  padding: 15px;
+  border-radius: 18px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.saldo-box span {
+  font-size: 14px;
+  color: #166534;
+  font-weight: 600;
+}
+
+.saldo-box strong {
+  font-size: 20px;
+  color: #16a34a;
+}
+
+.saldo-box.negativo {
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+}
+
+.saldo-box.negativo span {
+  color: #991b1b;
+}
+
+.saldo-box.negativo strong {
+  color: #ef4444;
+}
+
+.categoria-item {
+  margin-bottom: 12px;
+}
+
+.categoria-topo {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 6px;
+  font-size: 14px;
+}
+
+.categoria-topo strong {
+  color: #0f172a;
+}
+
+.barra-categoria {
+  width: 100%;
+  height: 11px;
+  background: #e2e8f0;
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.barra-categoria-preenchida {
+  height: 100%;
+  background: linear-gradient(135deg, #ec4899, #8b5cf6);
+  border-radius: 999px;
+  transition: width 0.3s ease;
+}
+
+.mensagem-vazia {
+  font-size: 14px;
+  color: #64748b;
+}
+
+.resumo-valores div:first-child {
+  background: #fff1f2;
+  border: 1px solid #fecdd3;
+}
+
+.resumo-valores div:first-child strong {
+  color: #e11d48;
+}
+
+.resumo-valores div:last-child {
+  background: #eff6ff;
+  border: 1px solid #bfdbfe;
+}
+
+.resumo-valores div:last-child strong {
+  color: #2563eb;
+}
+
+.saldo-box {
+  background: #f0fdf4;
+  border: 1px solid #bbf7d0;
+}
+
+.saldo-box strong {
+  color: #16a34a;
+}
+
+.saldo-box.negativo {
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+}
+
+.saldo-box.negativo strong {
+  color: #ef4444;
+}
+
+.botoes-orcamento {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.botoes-orcamento button {
+  padding: 11px 6px;
+  font-size: 13px;
+  border-radius: 12px;
+}
+
+#btnAdicionarOrcamento {
+  background: #22c55e;
+}
+
+#btnAdicionarOrcamento:hover {
+  background: #16a34a;
+}
+
+#btnRetirarOrcamento {
+  background: #ef4444;
+}
+
+#btnRetirarOrcamento:hover {
+  background: #dc2626;
+}
+
+#btnDefinirOrcamento {
+  background: #3b82f6;
+}
+
+#btnDefinirOrcamento:hover {
+  background: #2563eb;
+}
+
+.filtro-mes label {
+  display: block;
+  font-size: 14px;
+  color: #64748b;
+  margin-bottom: 8px;
+}
+
+.filtro-mes input {
+  background: #f8fafc;
+}
+
+@media (max-width: 380px) {
+  .app {
+    padding: 10px;
+  }
+
+  .card {
+    padding: 14px;
+  }
+
+  .resumo-valores {
+    gap: 8px;
+  }
+
+  .resumo-valores strong {
+    font-size: 17px;
+  }
+
+  .botoes-orcamento button {
+    font-size: 12px;
+    padding: 10px 4px;
+  }
+
+  .topo-banner img {
+    height: 130px;
+  }
+} 
