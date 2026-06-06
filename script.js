@@ -2,11 +2,24 @@ const API_BASE_URL = "https://controle-gastos-api-ruby.vercel.app";
 
 const loginBox = document.getElementById("loginBox");
 const appConteudo = document.getElementById("appConteudo");
-const senhaAppInput = document.getElementById("senhaApp");
+
+const loginForm = document.getElementById("loginForm");
+const cadastroForm = document.getElementById("cadastroForm");
+
+const loginEmailInput = document.getElementById("loginEmail");
+const loginSenhaInput = document.getElementById("loginSenha");
+
+const cadastroNomeInput = document.getElementById("cadastroNome");
+const cadastroEmailInput = document.getElementById("cadastroEmail");
+const cadastroSenhaInput = document.getElementById("cadastroSenha");
+const cadastroConfirmarSenhaInput = document.getElementById("cadastroConfirmarSenha");
+
 const btnLogin = document.getElementById("btnLogin");
+const btnCadastrar = document.getElementById("btnCadastrar");
+const btnMostrarCadastro = document.getElementById("btnMostrarCadastro");
+const btnMostrarLogin = document.getElementById("btnMostrarLogin");
 const loginMensagem = document.getElementById("loginMensagem");
 
-let APP_TOKEN = localStorage.getItem("app_token") || "";
 const formGasto = document.getElementById("formGasto");
 const descricaoInput = document.getElementById("descricao");
 const valorInput = document.getElementById("valor");
@@ -24,18 +37,23 @@ const saldoRestante = document.getElementById("saldoRestante");
 const textoSaldo = document.getElementById("textoSaldo");
 const saldoBox = document.querySelector(".saldo-box");
 const dashboardCategorias = document.getElementById("dashboardCategorias");
+const valorGuardadoTotal = document.getElementById("valorGuardadoTotal");
 
+let APP_TOKEN = localStorage.getItem("app_token") || "";
 let gastos = [];
-
-// Por enquanto o orçamento continua local.
-// Depois fazemos ele online também.
-let orcamentos = JSON.parse(localStorage.getItem("orcamentos")) || {};
-
+let orcamentos = {};
 let mesSelecionado = new Date().toISOString().slice(0, 7);
-let orcamento = Number(orcamentos[mesSelecionado]) || 0;
+let orcamento = 0;
 
 mesSelecionadoInput.value = mesSelecionado;
 dataInput.value = new Date().toISOString().split("T")[0];
+
+function authHeaders() {
+  return {
+    "Content-Type": "application/json",
+    "Authorization": `Bearer ${APP_TOKEN}`
+  };
+}
 
 function formatarMoeda(valor) {
   return Number(valor || 0).toLocaleString("pt-BR", {
@@ -49,38 +67,169 @@ function formatarData(data) {
   return `${partes[2]}/${partes[1]}/${partes[0]}`;
 }
 
-async function buscarGastosOnline() {
-  try {
-    const resposta = await fetch(`${API_BASE_URL}/api/expenses?month=${mesSelecionado}`);
+function mostrarMensagemLogin(texto) {
+  if (loginMensagem) {
+    loginMensagem.textContent = texto;
+  }
+}
 
-    if (!resposta.ok) {
-      throw new Error("Erro ao buscar gastos.");
-    }
+function abrirApp() {
+  loginBox.classList.add("oculto");
+  appConteudo.classList.remove("oculto");
+}
+
+function fecharApp() {
+  loginBox.classList.remove("oculto");
+  appConteudo.classList.add("oculto");
+}
+
+async function cadastrarUsuario() {
+  const name = cadastroNomeInput.value.trim();
+  const email = cadastroEmailInput.value.trim();
+  const password = cadastroSenhaInput.value;
+  const confirmPassword = cadastroConfirmarSenhaInput.value;
+
+  mostrarMensagemLogin("");
+
+  if (!name || !email || !password || !confirmPassword) {
+    mostrarMensagemLogin("Preencha todos os campos.");
+    return;
+  }
+
+  if (password !== confirmPassword) {
+    mostrarMensagemLogin("As senhas não conferem.");
+    return;
+  }
+
+  try {
+    const resposta = await fetch(`${API_BASE_URL}/api/register`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        name,
+        email,
+        password,
+        confirmPassword
+      })
+    });
 
     const dados = await resposta.json();
 
-    gastos = dados.map((item) => {
-      return {
-        id: item.id,
-        descricao: item.name,
-        valor: Number(item.value),
-        categoria: item.category,
-        data: item.date
-      };
-    });
+    if (!resposta.ok) {
+      mostrarMensagemLogin(dados.error || "Não foi possível criar a conta.");
+      return;
+    }
+
+    APP_TOKEN = dados.token;
+    localStorage.setItem("app_token", APP_TOKEN);
+
+    abrirApp();
+    await iniciarApp();
   } catch (erro) {
-    console.error("Erro ao carregar gastos:", erro);
-    alert("Não foi possível carregar os gastos online.");
-    gastos = [];
+    console.error("Erro ao cadastrar:", erro);
+    mostrarMensagemLogin("Erro ao conectar com o cadastro.");
   }
+}
+
+async function fazerLogin() {
+  const email = loginEmailInput.value.trim();
+  const password = loginSenhaInput.value;
+
+  mostrarMensagemLogin("");
+
+  if (!email || !password) {
+    mostrarMensagemLogin("Informe email e senha.");
+    return;
+  }
+
+  try {
+    const resposta = await fetch(`${API_BASE_URL}/api/login`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        email,
+        password
+      })
+    });
+
+    const dados = await resposta.json();
+
+    if (!resposta.ok) {
+      mostrarMensagemLogin(dados.error || "Email ou senha inválidos.");
+      return;
+    }
+
+    APP_TOKEN = dados.token;
+    localStorage.setItem("app_token", APP_TOKEN);
+
+    abrirApp();
+    await iniciarApp();
+  } catch (erro) {
+    console.error("Erro no login:", erro);
+    mostrarMensagemLogin("Erro ao conectar com o login.");
+  }
+}
+
+async function buscarGastosOnline() {
+  const resposta = await fetch(`${API_BASE_URL}/api/expenses?month=${mesSelecionado}`, {
+    headers: authHeaders()
+  });
+
+  if (resposta.status === 401) {
+    localStorage.removeItem("app_token");
+    APP_TOKEN = "";
+    fecharApp();
+    mostrarMensagemLogin("Faça login novamente.");
+    return;
+  }
+
+  if (!resposta.ok) {
+    throw new Error("Erro ao buscar gastos.");
+  }
+
+  const dados = await resposta.json();
+
+  gastos = dados.map((item) => {
+    return {
+      id: item.id,
+      descricao: item.name,
+      valor: Number(item.value),
+      categoria: item.category,
+      data: item.date
+    };
+  });
+}
+
+async function buscarTodosGastosOnline() {
+  const resposta = await fetch(`${API_BASE_URL}/api/expenses`, {
+    headers: authHeaders()
+  });
+
+  if (!resposta.ok) {
+    throw new Error("Erro ao buscar todos os gastos.");
+  }
+
+  const dados = await resposta.json();
+
+  return dados.map((item) => {
+    return {
+      id: item.id,
+      descricao: item.name,
+      valor: Number(item.value),
+      categoria: item.category,
+      data: item.date
+    };
+  });
 }
 
 async function salvarGastoOnline(gasto) {
   const resposta = await fetch(`${API_BASE_URL}/api/expenses`, {
     method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
+    headers: authHeaders(),
     body: JSON.stringify({
       name: gasto.descricao,
       value: Number(gasto.valor),
@@ -91,17 +240,17 @@ async function salvarGastoOnline(gasto) {
 
   const texto = await resposta.text();
 
-
-
   if (!resposta.ok) {
     throw new Error(texto || "Erro ao salvar gasto.");
   }
 
   return JSON.parse(texto);
 }
+
 async function excluirGastoOnline(id) {
   const resposta = await fetch(`${API_BASE_URL}/api/expenses?id=${id}`, {
-    method: "DELETE"
+    method: "DELETE",
+    headers: authHeaders()
   });
 
   if (!resposta.ok) {
@@ -109,6 +258,45 @@ async function excluirGastoOnline(id) {
   }
 
   return await resposta.json();
+}
+
+async function buscarOrcamentosOnline() {
+  const resposta = await fetch(`${API_BASE_URL}/api/budgets`, {
+    headers: authHeaders()
+  });
+
+  if (!resposta.ok) {
+    throw new Error("Erro ao buscar orçamentos.");
+  }
+
+  const dados = await resposta.json();
+
+  orcamentos = {};
+
+  dados.forEach((item) => {
+    orcamentos[item.month] = Number(item.value);
+  });
+
+  orcamento = Number(orcamentos[mesSelecionado]) || 0;
+}
+
+async function salvarOrcamentoOnline(mes, valor) {
+  const resposta = await fetch(`${API_BASE_URL}/api/budgets`, {
+    method: "POST",
+    headers: authHeaders(),
+    body: JSON.stringify({
+      month: mes,
+      value: Number(valor)
+    })
+  });
+
+  const texto = await resposta.text();
+
+  if (!resposta.ok) {
+    throw new Error(texto || "Erro ao salvar orçamento.");
+  }
+
+  return JSON.parse(texto);
 }
 
 function pegarGastosDoMes() {
@@ -138,17 +326,17 @@ async function adicionarGasto(event) {
     return;
   }
 
-  const novoGasto = {
-    descricao,
-    valor,
-    categoria,
-    data
-  };
-
   try {
-    await salvarGastoOnline(novoGasto);
+    await salvarGastoOnline({
+      descricao,
+      valor,
+      categoria,
+      data
+    });
+
     await buscarGastosOnline();
     atualizarTudo();
+    await atualizarValorGuardado();
 
     formGasto.reset();
     dataInput.value = new Date().toISOString().split("T")[0];
@@ -224,6 +412,39 @@ function atualizarSaldo() {
   }
 }
 
+async function atualizarValorGuardado() {
+  if (!valorGuardadoTotal) return;
+
+  try {
+    const todosGastos = await buscarTodosGastosOnline();
+
+    let totalGuardado = 0;
+
+    Object.keys(orcamentos).forEach((mes) => {
+      const orcamentoDoMes = Number(orcamentos[mes]) || 0;
+
+      const gastosDoMes = todosGastos.filter((gasto) => {
+        return gasto.data.startsWith(mes);
+      });
+
+      const totalGastoDoMes = gastosDoMes.reduce((soma, gasto) => {
+        return soma + Number(gasto.valor);
+      }, 0);
+
+      const sobraDoMes = orcamentoDoMes - totalGastoDoMes;
+
+      if (sobraDoMes > 0) {
+        totalGuardado += sobraDoMes;
+      }
+    });
+
+    valorGuardadoTotal.textContent = formatarMoeda(totalGuardado);
+  } catch (erro) {
+    console.error("Erro ao calcular valor guardado:", erro);
+    valorGuardadoTotal.textContent = formatarMoeda(0);
+  }
+}
+
 function atualizarDashboardCategorias() {
   dashboardCategorias.innerHTML = "";
 
@@ -284,6 +505,7 @@ async function excluirGasto(id) {
     await excluirGastoOnline(id);
     await buscarGastosOnline();
     atualizarTudo();
+    await atualizarValorGuardado();
   } catch (erro) {
     console.error("Erro ao excluir gasto:", erro);
     alert("Não foi possível excluir o gasto.");
@@ -292,7 +514,7 @@ async function excluirGasto(id) {
 
 formGasto.addEventListener("submit", adicionarGasto);
 
-btnAdicionarOrcamento.addEventListener("click", function () {
+btnAdicionarOrcamento.addEventListener("click", async function () {
   const valor = Number(orcamentoInput.value);
 
   if (valor <= 0) {
@@ -300,18 +522,24 @@ btnAdicionarOrcamento.addEventListener("click", function () {
     return;
   }
 
-  orcamento = orcamento + valor;
+  try {
+    orcamento = orcamento + valor;
 
-  orcamentos[mesSelecionado] = orcamento;
-  localStorage.setItem("orcamentos", JSON.stringify(orcamentos));
+    await salvarOrcamentoOnline(mesSelecionado, orcamento);
+    await buscarOrcamentosOnline();
 
-  atualizarOrcamento();
-  atualizarSaldo();
+    atualizarOrcamento();
+    atualizarSaldo();
+    await atualizarValorGuardado();
 
-  orcamentoInput.value = "";
+    orcamentoInput.value = "";
+  } catch (erro) {
+    console.error("Erro ao adicionar orçamento:", erro);
+    alert("Não foi possível salvar o orçamento online.");
+  }
 });
 
-btnRetirarOrcamento.addEventListener("click", function () {
+btnRetirarOrcamento.addEventListener("click", async function () {
   const valor = Number(orcamentoInput.value);
 
   if (valor <= 0) {
@@ -319,22 +547,28 @@ btnRetirarOrcamento.addEventListener("click", function () {
     return;
   }
 
-  orcamento = orcamento - valor;
+  try {
+    orcamento = orcamento - valor;
 
-  if (orcamento < 0) {
-    orcamento = 0;
+    if (orcamento < 0) {
+      orcamento = 0;
+    }
+
+    await salvarOrcamentoOnline(mesSelecionado, orcamento);
+    await buscarOrcamentosOnline();
+
+    atualizarOrcamento();
+    atualizarSaldo();
+    await atualizarValorGuardado();
+
+    orcamentoInput.value = "";
+  } catch (erro) {
+    console.error("Erro ao retirar orçamento:", erro);
+    alert("Não foi possível salvar o orçamento online.");
   }
-
-  orcamentos[mesSelecionado] = orcamento;
-  localStorage.setItem("orcamentos", JSON.stringify(orcamentos));
-
-  atualizarOrcamento();
-  atualizarSaldo();
-
-  orcamentoInput.value = "";
 });
 
-btnDefinirOrcamento.addEventListener("click", function () {
+btnDefinirOrcamento.addEventListener("click", async function () {
   const valor = Number(orcamentoInput.value);
 
   if (valor < 0) {
@@ -342,24 +576,67 @@ btnDefinirOrcamento.addEventListener("click", function () {
     return;
   }
 
-  orcamento = valor;
+  try {
+    orcamento = valor;
 
-  orcamentos[mesSelecionado] = orcamento;
-  localStorage.setItem("orcamentos", JSON.stringify(orcamentos));
+    await salvarOrcamentoOnline(mesSelecionado, orcamento);
+    await buscarOrcamentosOnline();
 
-  atualizarOrcamento();
-  atualizarSaldo();
+    atualizarOrcamento();
+    atualizarSaldo();
+    await atualizarValorGuardado();
 
-  orcamentoInput.value = "";
+    orcamentoInput.value = "";
+  } catch (erro) {
+    console.error("Erro ao definir orçamento:", erro);
+    alert("Não foi possível salvar o orçamento online.");
+  }
 });
 
 mesSelecionadoInput.addEventListener("change", async function () {
   mesSelecionado = mesSelecionadoInput.value;
 
-  orcamento = Number(orcamentos[mesSelecionado]) || 0;
-
+  await buscarOrcamentosOnline();
   await buscarGastosOnline();
+
   atualizarTudo();
+  await atualizarValorGuardado();
+});
+
+if (btnMostrarCadastro) {
+  btnMostrarCadastro.addEventListener("click", function () {
+    loginForm.classList.add("oculto");
+    cadastroForm.classList.remove("oculto");
+    mostrarMensagemLogin("");
+  });
+}
+
+if (btnMostrarLogin) {
+  btnMostrarLogin.addEventListener("click", function () {
+    cadastroForm.classList.add("oculto");
+    loginForm.classList.remove("oculto");
+    mostrarMensagemLogin("");
+  });
+}
+
+if (btnLogin) {
+  btnLogin.addEventListener("click", fazerLogin);
+}
+
+if (btnCadastrar) {
+  btnCadastrar.addEventListener("click", cadastrarUsuario);
+}
+
+loginSenhaInput?.addEventListener("keydown", function (event) {
+  if (event.key === "Enter") {
+    fazerLogin();
+  }
+});
+
+cadastroConfirmarSenhaInput?.addEventListener("keydown", function (event) {
+  if (event.key === "Enter") {
+    cadastrarUsuario();
+  }
 });
 
 let eventoInstalacao = null;
@@ -426,74 +703,28 @@ window.addEventListener("appinstalled", function () {
   esconderBotaoInstalar();
 });
 
-async function fazerLogin() {
-  const senha = senhaAppInput.value.trim();
+async function iniciarApp() {
+  await buscarOrcamentosOnline();
+  await buscarGastosOnline();
+  atualizarTudo();
+  await atualizarValorGuardado();
+}
 
-  if (!senha) {
-    loginMensagem.textContent = "Digite a senha.";
+async function verificarLoginSalvo() {
+  if (!APP_TOKEN) {
+    fecharApp();
     return;
   }
 
   try {
-    const resposta = await fetch(`${API_BASE_URL}/api/auth`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        password: senha
-      })
-    });
-
-    const dados = await resposta.json();
-
-    if (!resposta.ok) {
-      loginMensagem.textContent = dados.error || "Senha incorreta.";
-      return;
-    }
-
-    APP_TOKEN = dados.token;
-    localStorage.setItem("app_token", APP_TOKEN);
-
-    loginBox.classList.add("oculto");
-    appConteudo.classList.remove("oculto");
-
+    abrirApp();
     await iniciarApp();
   } catch (erro) {
-    console.error("Erro no login:", erro);
-    loginMensagem.textContent = "Erro ao conectar com o login.";
+    console.error("Erro ao iniciar com login salvo:", erro);
+    localStorage.removeItem("app_token");
+    APP_TOKEN = "";
+    fecharApp();
   }
-}
-
-btnLogin.addEventListener("click", fazerLogin);
-
-senhaAppInput.addEventListener("keydown", function (event) {
-  if (event.key === "Enter") {
-    fazerLogin();
-  }
-});
-
-async function verificarLoginSalvo() {
-  if (APP_TOKEN) {
-    loginBox.classList.add("oculto");
-    appConteudo.classList.remove("oculto");
-
-    await iniciarApp();
-  }
-}
-
-async function iniciarApp() {
-  await buscarGastosOnline();
-  atualizarTudo();
 }
 
 verificarLoginSalvo();
-
-if ("serviceWorker" in navigator) {
-  window.addEventListener("load", function () {
-    navigator.serviceWorker
-      .register("./service-worker.js")
-      .then(() => console.log("Service Worker registrado."))
-      .catch((erro) => console.error("Erro ao registrar Service Worker:", erro));
-  });
-}

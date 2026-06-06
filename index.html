@@ -21,29 +21,78 @@
 
   <!-- LOGIN -->
   <section id="loginBox" class="login-screen">
-    <div class="login-card">
-      <img 
-        src="./images/Logo-leticia.png" 
-        alt="Controle da Letícia" 
-        class="login-logo"
-      >
+  <div class="login-card">
+    <img 
+      src="./images/Logo-leticia.png" 
+      alt="Controle da Letícia" 
+      class="login-logo"
+    >
 
-      <h1>Controle da Letícia</h1>
-      <p>Digite a senha para acessar seu controle financeiro.</p>
+    <h1>Controle da Letícia</h1>
+
+    <div id="loginForm">
+      <p>Entre na sua conta.</p>
+
+      <input 
+        type="email" 
+        id="loginEmail" 
+        placeholder="Email"
+      >
 
       <input 
         type="password" 
-        id="senhaApp" 
-        placeholder="Senha do app"
+        id="loginSenha" 
+        placeholder="Senha"
       >
 
       <button id="btnLogin" type="button">
         Entrar
       </button>
 
-      <small id="loginMensagem"></small>
+      <button id="btnMostrarCadastro" class="btn-link" type="button">
+        Criar nova conta
+      </button>
     </div>
-  </section>
+
+    <div id="cadastroForm" class="oculto">
+      <p>Crie sua conta.</p>
+
+      <input 
+        type="text" 
+        id="cadastroNome" 
+        placeholder="Nome"
+      >
+
+      <input 
+        type="email" 
+        id="cadastroEmail" 
+        placeholder="Email"
+      >
+
+      <input 
+        type="password" 
+        id="cadastroSenha" 
+        placeholder="Senha"
+      >
+
+      <input 
+        type="password" 
+        id="cadastroConfirmarSenha" 
+        placeholder="Confirmar senha"
+      >
+
+      <button id="btnCadastrar" type="button">
+        Criar conta
+      </button>
+
+      <button id="btnMostrarLogin" class="btn-link" type="button">
+        Já tenho conta
+      </button>
+    </div>
+
+    <small id="loginMensagem"></small>
+  </div>
+</section>
 
   <!-- APP -->
   <div id="appConteudo" class="app oculto">
@@ -67,36 +116,13 @@
 
     <!-- VALOR GUARDADO -->
     <section class="card guardado-box">
-      <h2>Valor guardado disponível</h2>
+  <h2>Valor guardado disponível</h2>
 
-      <div class="guardado-total">
-        <span>Total guardado</span>
-        <strong id="valorGuardadoTotal">R$ 0,00</strong>
-      </div>
-
-      <div class="guardado-form">
-        <input 
-          type="number" 
-          id="valorGuardadoInput" 
-          placeholder="Digite um valor" 
-          step="0.01"
-        >
-
-        <div class="botoes-guardado">
-          <button id="btnAdicionarGuardado" type="button">
-            Adicionar
-          </button>
-
-          <button id="btnRetirarGuardado" type="button">
-            Retirar
-          </button>
-
-          <button id="btnDefinirGuardado" type="button">
-            Definir total
-          </button>
-        </div>
-      </div>
-    </section>
+  <div class="guardado-total">
+    <span>Soma do que sobrou nos meses</span>
+    <strong id="valorGuardadoTotal">R$ 0,00</strong>
+  </div>
+</section>
 
     <section class="card resumo">
       <h2>Resumo do mês</h2>
