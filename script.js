@@ -1,5 +1,12 @@
 const API_BASE_URL = "https://controle-gastos-api-ruby.vercel.app";
 
+const loginBox = document.getElementById("loginBox");
+const appConteudo = document.getElementById("appConteudo");
+const senhaAppInput = document.getElementById("senhaApp");
+const btnLogin = document.getElementById("btnLogin");
+const loginMensagem = document.getElementById("loginMensagem");
+
+let APP_TOKEN = localStorage.getItem("app_token") || "";
 const formGasto = document.getElementById("formGasto");
 const descricaoInput = document.getElementById("descricao");
 const valorInput = document.getElementById("valor");
@@ -419,12 +426,68 @@ window.addEventListener("appinstalled", function () {
   esconderBotaoInstalar();
 });
 
+async function fazerLogin() {
+  const senha = senhaAppInput.value.trim();
+
+  if (!senha) {
+    loginMensagem.textContent = "Digite a senha.";
+    return;
+  }
+
+  try {
+    const resposta = await fetch(`${API_BASE_URL}/api/auth`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        password: senha
+      })
+    });
+
+    const dados = await resposta.json();
+
+    if (!resposta.ok) {
+      loginMensagem.textContent = dados.error || "Senha incorreta.";
+      return;
+    }
+
+    APP_TOKEN = dados.token;
+    localStorage.setItem("app_token", APP_TOKEN);
+
+    loginBox.classList.add("oculto");
+    appConteudo.classList.remove("oculto");
+
+    await iniciarApp();
+  } catch (erro) {
+    console.error("Erro no login:", erro);
+    loginMensagem.textContent = "Erro ao conectar com o login.";
+  }
+}
+
+btnLogin.addEventListener("click", fazerLogin);
+
+senhaAppInput.addEventListener("keydown", function (event) {
+  if (event.key === "Enter") {
+    fazerLogin();
+  }
+});
+
+async function verificarLoginSalvo() {
+  if (APP_TOKEN) {
+    loginBox.classList.add("oculto");
+    appConteudo.classList.remove("oculto");
+
+    await iniciarApp();
+  }
+}
+
 async function iniciarApp() {
   await buscarGastosOnline();
   atualizarTudo();
 }
 
-iniciarApp();
+verificarLoginSalvo();
 
 if ("serviceWorker" in navigator) {
   window.addEventListener("load", function () {

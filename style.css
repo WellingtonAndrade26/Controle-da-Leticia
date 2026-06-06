@@ -385,3 +385,130 @@ button:hover {
 .btn-instalar.oculto {
   display: none;
 }
+
+.oculto {
+  display: none !important;
+}
+
+.login-screen {
+  min-height: 100vh;
+  background: linear-gradient(180deg, #fdf2f8, #ffffff);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.login-card {
+  width: 100%;
+  max-width: 380px;
+  background: #ffffff;
+  border-radius: 24px;
+  padding: 24px;
+  text-align: center;
+  box-shadow: 0 14px 35px rgba(236, 72, 153, 0.18);
+  border: 1px solid #fbcfe8;
+}
+
+.login-logo {
+  width: 130px;
+  max-width: 80%;
+  margin-bottom: 12px;
+}
+
+.login-card h1 {
+  margin: 8px 0;
+  color: #be185d;
+}
+
+.login-card p {
+  color: #6b7280;
+  font-size: 14px;
+  margin-bottom: 16px;
+}
+
+.login-card input {
+  width: 100%;
+  padding: 14px;
+  border-radius: 14px;
+  border: 1px solid #f9a8d4;
+  font-size: 16px;
+  margin-bottom: 12px;
+}
+
+.login-card button {
+  width: 100%;
+  border: none;
+  background: #ec4899;
+  color: white;
+  padding: 14px;
+  border-radius: 14px;
+  font-weight: 800;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+#loginMensagem {
+  display: block;
+  margin-top: 10px;
+  color: #dc2626;
+}
+
+.guardado-box {
+  background: linear-gradient(135deg, #ec4899, #be185d);
+  color: white;
+}
+
+.guardado-box h2 {
+  color: white;
+}
+
+.guardado-total {
+  background: rgba(255, 255, 255, 0.16);
+  padding: 16px;
+  border-radius: 18px;
+  margin-bottom: 14px;
+}
+
+.guardado-total span {
+  display: block;
+  font-size: 14px;
+  opacity: 0.9;
+}
+
+.guardado-total strong {
+  display: block;
+  font-size: 30px;
+  margin-top: 6px;
+}
+
+.guardado-form input {
+  width: 100%;
+  padding: 14px;
+  border-radius: 14px;
+  border: none;
+  font-size: 16px;
+  margin-bottom: 12px;
+}
+
+.botoes-guardado {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+
+.botoes-guardado button {
+  border: none;
+  border-radius: 14px;
+  padding: 12px;
+  font-weight: 800;
+  cursor: pointer;
+  background: #ffffff;
+  color: #be185d;
+}
+
+@media (max-width: 600px) {
+  .botoes-guardado {
+    grid-template-columns: 1fr;
+  }
+}

@@ -3,31 +3,58 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <title>Controle da Letícia</title>
 
   <link rel="stylesheet" href="style.css">
+  <link rel="manifest" href="./manifest.json">
 
-  <!-- DE: -->
-<link rel="manifest" href="manifest.json">
-
-<!-- PARA: -->
-<link rel="manifest" href="/Controle-da-Leticia/manifest.json">
   <meta name="theme-color" content="#ec4899">
-  <link rel="apple-touch-icon" href="images/icon-192.png">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="Controle">
+
+  <link rel="apple-touch-icon" href="./images/icon-192.png">
 </head>
 
 <body>
 
-  <div class="app">
+  <!-- LOGIN -->
+  <section id="loginBox" class="login-screen">
+    <div class="login-card">
+      <img 
+        src="./images/Logo-leticia.png" 
+        alt="Controle da Letícia" 
+        class="login-logo"
+      >
+
+      <h1>Controle da Letícia</h1>
+      <p>Digite a senha para acessar seu controle financeiro.</p>
+
+      <input 
+        type="password" 
+        id="senhaApp" 
+        placeholder="Senha do app"
+      >
+
+      <button id="btnLogin" type="button">
+        Entrar
+      </button>
+
+      <small id="loginMensagem"></small>
+    </div>
+  </section>
+
+  <!-- APP -->
+  <div id="appConteudo" class="app oculto">
 
     <header class="topo-banner">
-  <img src="images/Logo-leticia.png" alt="Controle da Letícia">
-</header>
+      <img src="./images/Logo-leticia.png" alt="Controle da Letícia">
+    </header>
 
-<button id="btnInstallApp" class="btn-instalar" type="button">
-  Instalar App
-</button>
-
+    <button id="btnInstallApp" class="btn-instalar" type="button">
+      Instalar App
+    </button>
 
     <section class="card filtro-mes">
       <label for="mesSelecionado">Mês selecionado</label>
@@ -36,6 +63,39 @@
         type="month" 
         id="mesSelecionado"
       >
+    </section>
+
+    <!-- VALOR GUARDADO -->
+    <section class="card guardado-box">
+      <h2>Valor guardado disponível</h2>
+
+      <div class="guardado-total">
+        <span>Total guardado</span>
+        <strong id="valorGuardadoTotal">R$ 0,00</strong>
+      </div>
+
+      <div class="guardado-form">
+        <input 
+          type="number" 
+          id="valorGuardadoInput" 
+          placeholder="Digite um valor" 
+          step="0.01"
+        >
+
+        <div class="botoes-guardado">
+          <button id="btnAdicionarGuardado" type="button">
+            Adicionar
+          </button>
+
+          <button id="btnRetirarGuardado" type="button">
+            Retirar
+          </button>
+
+          <button id="btnDefinirGuardado" type="button">
+            Definir total
+          </button>
+        </div>
+      </div>
     </section>
 
     <section class="card resumo">
@@ -54,9 +114,17 @@
         </div>
 
         <div class="botoes-orcamento">
-          <button id="btnAdicionarOrcamento" type="button">Adicionar</button>
-          <button id="btnRetirarOrcamento" type="button">Retirar</button>
-          <button id="btnDefinirOrcamento" type="button">Definir</button>
+          <button id="btnAdicionarOrcamento" type="button">
+            Adicionar
+          </button>
+
+          <button id="btnRetirarOrcamento" type="button">
+            Retirar
+          </button>
+
+          <button id="btnDefinirOrcamento" type="button">
+            Definir
+          </button>
         </div>
       </div>
 
@@ -76,7 +144,6 @@
         <span id="textoSaldo">Disponível</span>
         <strong id="saldoRestante">R$ 0,00</strong>
       </div>
-
     </section>
 
     <section class="card">
@@ -115,7 +182,9 @@
           required
         >
 
-        <button type="submit">Salvar gasto</button>
+        <button type="submit">
+          Salvar gasto
+        </button>
       </form>
     </section>
 
@@ -137,12 +206,12 @@
 
   </div>
 
-  <script src="script.js"></script>
+  <script src="./script.js"></script>
 
   <script>
     if ("serviceWorker" in navigator) {
       window.addEventListener("load", function () {
-        navigator.serviceWorker.register("/Controle-da-Leticia/service-worker.js")
+        navigator.serviceWorker.register("./service-worker.js")
           .then(function () {
             console.log("Service Worker registrado com sucesso.");
           })
