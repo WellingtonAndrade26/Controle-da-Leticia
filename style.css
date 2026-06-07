@@ -397,11 +397,14 @@ button:hover {
 }
 
 .login-card {
+  
+  padding-top: 0px;
+  overflow: hidden;
   width: 100%;
   max-width: 380px;
   background: #ffffff;
   border-radius: 24px;
-  padding: 24px;
+  padding: 0px 24px 0px 24px;
   text-align: center;
   box-shadow: 0 14px 35px rgba(236, 72, 153, 0.18);
   border: 1px solid #fbcfe8;
@@ -817,4 +820,26 @@ button:hover {
   #boasVindasBanner {
     font-size: 15px;
   }
+}
+
+/* Banner da tela de login */
+.login-banner {
+  width: calc(100% + 68px);
+  height: 155px;
+  margin-left: -34px;
+  margin-right: -34px;
+  margin-bottom: 28px;
+  border-radius: 28px 28px 22px 22px;
+  overflow: hidden;
+  border-bottom: 1px solid rgba(236, 72, 153, 0.22);
+  box-shadow: 0 18px 38px rgba(236, 72, 153, 0.14);
+  background: #fff0f7;
+}
+
+.login-banner img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
 }
