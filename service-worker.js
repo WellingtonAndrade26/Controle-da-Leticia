@@ -1,4 +1,4 @@
-const CACHE_NAME = "controle-da-leticia-v6";
+const CACHE_NAME = "controle-da-leticia-v7";
 
 const ARQUIVOS = [
   "/Controle-da-Leticia/",
