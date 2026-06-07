@@ -702,3 +702,119 @@ button:hover {
 .btn-sair:hover {
   background: #fecaca;
 }
+
+/* ===============================
+   TOPO FINAL - BANNER + BOAS VINDAS
+   =============================== */
+
+.hero-banner {
+  width: 100%;
+  border-radius: 26px;
+  overflow: hidden;
+  margin-bottom: 12px;
+  background: #fdf2f8;
+  box-shadow: 0 14px 30px rgba(236, 72, 153, 0.18);
+}
+
+.hero-banner-img {
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: contain;
+  border-radius: 26px;
+}
+
+/* Card bem-vindo alinhado abaixo do banner */
+.welcome-card {
+  width: 100%;
+  background: #ffffff;
+  border: 1px solid #f3d1df;
+  border-radius: 22px;
+  padding: 13px 15px;
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  box-shadow: 0 10px 22px rgba(190, 24, 93, 0.10);
+}
+
+.welcome-icon {
+  width: 42px;
+  height: 42px;
+  min-width: 42px;
+  background: transparent;
+  border-radius: 0;
+  overflow: visible;
+  box-shadow: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.welcome-icon-img {
+  width: 42px;
+  height: 42px;
+  object-fit: contain;
+  display: block;
+}
+
+.welcome-text {
+  flex: 1;
+  min-width: 0;
+}
+
+#boasVindasBanner {
+  display: block;
+  color: #9d174d;
+  font-size: 17px;
+  font-weight: 800;
+  line-height: 1.25;
+  word-break: break-word;
+}
+
+/* Botão instalar */
+.btn-instalar {
+  display: block;
+  width: 100%;
+  border: none;
+  border-radius: 999px;
+  padding: 15px 18px;
+  margin-bottom: 18px;
+  background: linear-gradient(135deg, #ec4899, #db2777);
+  color: #ffffff;
+  font-size: 17px;
+  font-weight: 800;
+  cursor: pointer;
+  box-shadow: 0 12px 24px rgba(236, 72, 153, 0.22);
+}
+
+.btn-instalar.oculto {
+  display: none !important;
+}
+
+@media (max-width: 430px) {
+  .hero-banner {
+    border-radius: 22px;
+  }
+
+  .hero-banner-img {
+    border-radius: 22px;
+  }
+
+  .welcome-card {
+    border-radius: 18px;
+    padding: 12px 14px;
+    gap: 10px;
+  }
+
+  .welcome-icon,
+  .welcome-icon-img {
+    width: 38px;
+    height: 38px;
+    min-width: 38px;
+  }
+
+  #boasVindasBanner {
+    font-size: 15px;
+  }
+}
