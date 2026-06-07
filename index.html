@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>Controle da Letícia</title>
+  <title>Esteja no Controle</title>
 
   <link rel="stylesheet" href="style.css">
   <link rel="manifest" href="./manifest.json">
@@ -24,11 +24,11 @@
   <div class="login-card">
     <img 
       src="./images/Logo-leticia.png" 
-      alt="Controle da Letícia" 
+      alt="Esteja no Controle" 
       class="login-logo"
     >
 
-    <h1>Controle da Letícia</h1>
+    <h1>Esteja no Controle</h1>
 
     <div id="loginForm">
       <p>Entre na sua conta.</p>
@@ -97,13 +97,27 @@
   <!-- APP -->
   <div id="appConteudo" class="app oculto">
 
-    <header class="topo-banner">
-      <img src="./images/Logo-leticia.png" alt="Controle da Letícia">
-    </header>
+   <header class="banner-topo">
+  <img 
+    src="./images/banner-controle.png" 
+    alt="Esteja no Controle" 
+    class="banner-img"
+  >
+</header>
 
-    <button id="btnInstallApp" class="btn-instalar" type="button">
-      Instalar App
-    </button>
+<section class="bem-vindo-card">
+  <div class="bem-vindo-icone">
+  <img src="./images/perfil.png" alt="" class="icone-perfil">
+</div>
+
+  <div class="bem-vindo-texto">
+    <span id="boasVindasBanner">Bem-vindo(a), Usuário</span>
+  </div>
+</section>
+
+<button id="btnInstallApp" class="btn-instalar" type="button">
+  Instalar App
+</button>
 
     <section class="card filtro-mes">
       <label for="mesSelecionado">Mês selecionado</label>
@@ -225,10 +239,18 @@
     <section class="card">
       <h2>Gastos cadastrados</h2>
 
+      
+
       <ul id="listaGastos">
         <!-- Os gastos vão aparecer aqui pelo JavaScript -->
       </ul>
     </section>
+
+    <section class="card sair-card">
+  <button id="btnSair" class="btn-sair" type="button">
+    Sair da conta
+  </button>
+</section>
 
   </div>
 

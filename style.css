@@ -11,12 +11,9 @@ body {
 }
 
 .app {
-  width: 100%;
+  padding: 12px 16px 20px;
   max-width: 430px;
   margin: 0 auto;
-  min-height: 100vh;
-  padding: 14px;
-  padding-bottom: 30px;
 }
 
 .topo-banner {
@@ -524,4 +521,184 @@ button:hover {
 
 .login-card input {
   margin-bottom: 10px;
+}
+
+/* ===== BANNER ===== */
+
+.banner-topo {
+  width: 100%;
+  margin-bottom: 12px;
+  border-radius: 26px;
+  overflow: hidden;
+  background: #fdf2f8;
+  box-shadow: 0 14px 30px rgba(236, 72, 153, 0.18);
+}
+
+.banner-img {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 26px;
+}
+
+/* ===== BOX BEM-VINDO ===== */
+
+.bem-vindo-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: #ffffff;
+  border: 1px solid #f3d1df;
+  border-radius: 22px;
+  padding: 14px 16px;
+  margin-bottom: 16px;
+  box-shadow: 0 10px 22px rgba(190, 24, 93, 0.10);
+}
+
+.bem-vindo-icone {
+  width: 40px;
+  height: 40px;
+  min-width: 40px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #ec4899, #db2777);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+}
+
+.bem-vindo-texto {
+  flex: 1;
+  min-width: 0;
+}
+
+#boasVindasBanner {
+  display: block;
+  color: #9d174d;
+  font-size: 17px;
+  font-weight: 800;
+  line-height: 1.25;
+  word-break: break-word;
+}
+
+/* ===== BOTÃO INSTALAR ===== */
+
+.btn-instalar {
+  display: block;
+  width: 100%;
+  border: none;
+  border-radius: 999px;
+  padding: 15px 18px;
+  margin-bottom: 18px;
+  background: linear-gradient(135deg, #ec4899, #db2777);
+  color: #ffffff;
+  font-size: 17px;
+  font-weight: 800;
+  cursor: pointer;
+  box-shadow: 0 12px 24px rgba(236, 72, 153, 0.22);
+}
+
+.btn-instalar.oculto {
+  display: none !important;
+}
+
+/* ===== MOBILE ===== */
+
+@media (max-width: 430px) {
+  .banner-topo {
+    border-radius: 22px;
+  }
+
+  .banner-img {
+    border-radius: 22px;
+  }
+
+  .bem-vindo-card {
+    border-radius: 18px;
+    padding: 12px 14px;
+    gap: 10px;
+  }
+
+  .bem-vindo-icone {
+  width: 42px;
+  height: 42px;
+  min-width: 42px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #ec4899, #be185d);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  box-shadow: inset 0 2px 6px rgba(255, 255, 255, 0.25),
+              0 6px 14px rgba(190, 24, 93, 0.22);
+}
+
+.icone-cabeca {
+  position: absolute;
+  top: 9px;
+  width: 12px;
+  height: 12px;
+  background: #ffffff;
+  border-radius: 50%;
+}
+
+.icone-corpo {
+  position: absolute;
+  bottom: 8px;
+  width: 22px;
+  height: 12px;
+  background: #ffffff;
+  border-radius: 999px 999px 8px 8px;
+}
+
+@media (max-width: 430px) {
+  
+ .bem-vindo-icone {
+  width: 42px;
+  height: 42px;
+  min-width: 42px;
+  border-radius: 0;
+  overflow: visible;
+  background: transparent;
+  box-shadow: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.icone-perfil {
+  width: 42px;
+  height: 42px;
+  object-fit: contain;
+  display: block;
+}
+}
+  #boasVindasBanner {
+    font-size: 15px;
+  }
+}
+
+.sair-card {
+  background: transparent;
+  box-shadow: none;
+  border: none;
+  padding: 0;
+}
+
+.btn-sair {
+  width: 100%;
+  border: none;
+  border-radius: 999px;
+  padding: 14px 18px;
+  background: #fee2e2;
+  color: #dc2626;
+  font-size: 16px;
+  font-weight: 800;
+  cursor: pointer;
+  box-shadow: none;
+}
+
+.btn-sair:hover {
+  background: #fecaca;
 }

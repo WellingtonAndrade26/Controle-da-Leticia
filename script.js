@@ -6,6 +6,10 @@ const appConteudo = document.getElementById("appConteudo");
 const loginForm = document.getElementById("loginForm");
 const cadastroForm = document.getElementById("cadastroForm");
 
+const btnSair = document.getElementById("btnSair");
+
+const boasVindasBanner = document.getElementById("boasVindasBanner");
+
 const loginEmailInput = document.getElementById("loginEmail");
 const loginSenhaInput = document.getElementById("loginSenha");
 
@@ -62,6 +66,14 @@ function formatarMoeda(valor) {
   });
 }
 
+function atualizarBannerUsuario(nome) {
+  const nomeFinal = nome || localStorage.getItem("app_user_name") || "Usuário";
+
+  if (boasVindasBanner) {
+    boasVindasBanner.textContent = `Bem-vindo(a), ${nomeFinal}`;
+  }
+}
+
 function formatarData(data) {
   const partes = data.split("-");
   return `${partes[2]}/${partes[1]}/${partes[0]}`;
@@ -76,6 +88,7 @@ function mostrarMensagemLogin(texto) {
 function abrirApp() {
   loginBox.classList.add("oculto");
   appConteudo.classList.remove("oculto");
+  atualizarBannerUsuario();
 }
 
 function fecharApp() {
@@ -125,6 +138,9 @@ async function cadastrarUsuario() {
     APP_TOKEN = dados.token;
     localStorage.setItem("app_token", APP_TOKEN);
 
+    localStorage.setItem("app_user_name", dados.user.name);
+    atualizarBannerUsuario(dados.user.name);
+
     abrirApp();
     await iniciarApp();
   } catch (erro) {
@@ -165,6 +181,9 @@ async function fazerLogin() {
 
     APP_TOKEN = dados.token;
     localStorage.setItem("app_token", APP_TOKEN);
+
+    localStorage.setItem("app_user_name", dados.user.name);
+    atualizarBannerUsuario(dados.user.name);
 
     abrirApp();
     await iniciarApp();
@@ -725,6 +744,36 @@ async function verificarLoginSalvo() {
     APP_TOKEN = "";
     fecharApp();
   }
+}
+
+if (btnSair) {
+  btnSair.addEventListener("click", function () {
+    const confirmar = confirm("Deseja sair da sua conta?");
+
+    if (!confirmar) {
+      return;
+    }
+
+    localStorage.removeItem("app_token");
+    localStorage.removeItem("app_user_name");
+
+    APP_TOKEN = "";
+    gastos = [];
+    orcamentos = {};
+    orcamento = 0;
+
+    fecharApp();
+
+    if (loginEmailInput) {
+      loginEmailInput.value = "";
+    }
+
+    if (loginSenhaInput) {
+      loginSenhaInput.value = "";
+    }
+
+    mostrarMensagemLogin("Você saiu da conta.");
+  });
 }
 
 verificarLoginSalvo();
